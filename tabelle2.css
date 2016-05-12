@@ -1,0 +1,47 @@
+/*
+http://icant.co.uk/csstablegallery/index.php?css=71
+
+Data Tables and Cascading Style Sheets Gallery
+Title: Casablanca
+Author: RODrigo CASTilho Galvão Ferreira - RODCAST
+URL: http://www.rodcast.com.br
+Update: 03/23/2006 11:15 PM
+*/
+
+myTable {
+	color: #7F7F7F;
+	font: 0.8em/1.6em "Trebuchet MS",Verdana,sans-serif;
+	border-collapse: collapse;
+}
+
+myTable,caption {
+	margin: 0 auto;
+	border-right: 1px solid #CCC;
+	border-left: 1px solid #CCC
+}
+
+caption,th,td {
+	border-left: 0;
+	padding: 10px;
+}
+
+caption,thead th,tfoot th,tfoot td {
+	background-color: #E63C1E;
+	color: #FFF;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+thead th {
+	background-color: #483D8B;
+	color: #F2EFDF;
+}
+
+tbody th {
+	padding: 20px 10px
+}
+
+tbody td.odd {
+	background-color: #F7F7F7;
+	color: #666
+}

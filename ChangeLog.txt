@@ -1,0 +1,319 @@
+better Changelog
+-------------------
+
+Note: 
+   better-v04 was the initial release. Versions prior to v04 are considered beta phase.
+
+===========================================================================================================
+better-v05
+-------------
+
+  - Updated variables in the following files such that the files work for PHP5, too:
+    (i.e. changed GET_HTTP_VARS to 
+      - team_upload_by_file.php
+      - spiele_upload_by_file.php
+      - other_player.php
+
+  - Security feature:
+      - Whenever an erroneous user name or password was passed, the error message
+        "Falscher Benutzername oder falsches Passwort." appears. Hence, it is not 
+        possible to see what was wrong.
+        The messages "Ein XY brauchen wir schon" are left unchanged.
+
+  - Added new menu items for admin:
+    "Teams/Spiele aus Datei einlesen" (according files: spiele_/team_upload_by_file.php).
+    They shall ease the upload of whole teams with their according flags and the table of
+    games with date etc..
+
+  - In tab.php:
+      - Added variable "maxTore" (replaces former value '9').
+        This is important for games which are likely to have more than 9 goals.
+      - Bugfix: When tab.php is opened the very first time, $RestFaktorPunkte is calculated 
+                correctly.
+
+  - Added date until which the "Meister-Tipp" has to be tipped in tipphelp.php.
+
+  - Added menu to mitmachen.php.
+
+  - Fixed menu for admin in mylogin.php.
+    Furthermore, fixed display of user name and email adress.
+
+  - Bugfix in del_user.php: Users 'admin' and 'Gast' are filtered directly in SQL query.
+
+  - Corrected some spelling mistakes.
+ 
+===========================================================================================================
+better-v06
+-------------
+
+  - Added "gewinnverteilung.php", which defines how many money the winners win.
+    Simply choose one of the verteilung* methods or add new ones to change the win sums.
+  
+  - Bugfix in mitmachen.php:
+    Warning the user not to use spaces in username and passwords.
+
+  - Improved mail_user.php:
+      - Replaced deprecated $HTTP_GET_VARS with $_GET. (Works with PHP 5 now)
+      - Nicened mail template.
+
+  - Wrote guest-login in bold letters in setup_2.php. Eases reading for new users.
+  - Bugfix in meistertipp.php:
+	 - Calling variable $submit explicitely as $_POST['submit'] (Works with PHP 5 now).
+
+===========================================================================================================
+better-v07
+-------------
+
+  - Eased adding new users for admin: default input value for inputs is taken from $_GET.
+  - Fixed spelling of "Zur&uuml;ck" in:
+      - admin_new_logo
+      - chg_game
+      - chg_game2
+      - neu
+      - new_flag
+      - new_game
+      - new_kategorie
+      - new_team
+      - ren_kategorie
+      - ren_team
+      - spiele_upload_by_file
+      - team_upload_by_file
+      
+  - Added "gewinnverteilung" to menus of:
+     - mylogin
+     - ranking
+     - ranking_difs
+      
+  - gewinnverteilung: 
+      - Added "Rangliste" to menu.
+      - Commented out testing stuff.
+      
+  - mail_to_all: Fixed $Submit check (did not ask for $_POST['Submit']).
+  - meistertipp: Added "<-- ... -->" to headline.
+  - mitmachen: 
+      - Added latest time for tips.
+      - TODO: Get latest time to register from DB. See comments.
+
+  - mylogin: Nicened headline.
+  - neu: Removed unnecessary "Bitte überweisen..." text.
+  - ranking & ranking_difs: Displaying number of participants.
+  - sichere_seite: Fixed sequence of menu items.
+  - tipphelp: Precised information.
+===========================================================================================================
+better-v08
+-------------
+
+  - Added file "general_defs.inc.php", which currently only contains the definition of VERSION.
+	  The current VERSION is displayed in index_2.php.
+		
+  - Added file "test.php", which can be used directly for testing certain methods.
+	  NOTE: Remove this file whenever you start acquiring members for beTTer!
+
+  - Added file "init_user_tipps.php" (admin only)
+	    - admin can reset all tips of a single user or all tips of all users at once.	
+		
+  - general_methods.inc.php:
+      - Added methods add_date[s]() in order to get easy access to dates in the future or past, like 
+		    "tomorrow" or "yesterday".
+      - Added method dump() to ease dumping variables.
+		
+  - mitmachen.php: Generating text "bitte spätestens überweisen bis..." automatically.
+                   Latest payment accepted: start of first game - 1 day.
+	                 Uses new method add_date() to calculate the date of one day before tournament start.
+
+  - tab.php:
+	    - Added items to drop-down-box: "die nächsten/letzten 3/4/5/10 Spiele".
+			  This should enhance the usage of the list a lot.
+  		- Siehe "Kein-Tipp-kein-Faktor-Bugfix" 
+			- Displaying flags in the fix size of $flagWidth and $flagHeight now, which are defined at the top of the file.
+			
+	- neu.php: Siehe "Kein-Tipp-kein-Faktor-Bugfix" 
+
+  - other_player.php:
+      - Also added items to drop-down-box: "die letzten 3/4/5/10 Spiele".
+        Eases overview of the other users' latest tips.
+			- Removed options "Mail an $user schreiben" and "Meine Tipps" for users "Gast" and "admin".
+			- Aus "Men" wieder "Menü" gemacht. :)
+
+	- Kein-Tipp-kein-Faktor-Bugfix (tab.php / neu.php):
+			- neu.php:
+					- Bei neuem Spieler wird jetzt direkt einmal jedes Spiel mit 99 : 99, Faktor 1 getippt.
+						Dadurch können keine Faktorpunkte mehr vergessen werden, wenn jemand vergisst, zu tippen.
+						Vorher wurden solche Tipps mit Faktor 0 angenommen, d.h. man konnte durch Nicht-Tippen Faktorpunkte ansammeln.
+
+			- tab.php:
+			    - initiale Tipps (eigtl. 99 : 99 laut Datenbank) werden angezeigt als:
+					    0 :  0, wenn noch getippt werden kann, also das Spiel in der Zukunft liegt.
+						 -1 : -1, wenn das Spiel bereits um ist, also der Benutzer vergessen hat, das Spiel zu tippen.
+						          Damit soll dem Benutzer verdeutlicht werden, dass er hier keine Chance auf Punkte gehabt hätte.
+
+						ACHTUNG: die 99 : 99 in der Datenbank bringt in beiden Fällen das gleiche Resultat hervor:
+						         wenn noch getippt werden kann, ist es der SW völlig freigestellt, was sie initial anzeigt,
+										 und da bleiben wir beim bisherigen Standard von 0 : 0.
+										 Für vergangene Spiele ist 99 : 99 ebenfalls ok, da ein Spiel niemals so ausgehen wird und man
+										 dies auch nicht tippen kann ($maxTore = 19).
+
+										 Wollte man in die Datenbank direkt -1 : -1 schreiben, müsste man in der Tabelle 'tipp' den Datentyp 
+										 von 'Tore1' und 'Tore2' auf signed setzen (derzeit unsigned).
+
+  - meistertipp.php: removed team "noch unbekannt" from drop-down list.
+                     That team will definitely never win the tournament... ;)
+
+  - admin.php:
+      - Improved layout (2 columns --> better overview).
+
+  - Added page "file_upload.php", which allows to upload all flags at once as a ZIP file.
+
+===========================================================================================================
+better-0.9.0
+-------------
+  - Added new "Hauptmenü" (with columns "Allgemein" and "Tippen") and displayed this on every user site.
+	  The menu is created via create_menu() in general_methods.
+		Also creating some of the heads with create_head(). See FIXMEs for completion.
+
+better-0.9.1
+-------------
+	- Added column "Die Mitspieler" and displayed this on every user site.
+	- view_gametipps: 
+	    - changed table styles such that the tables looks different now, but the other tables on the page look as usual.
+	
+better-0.9.2
+-------------
+	- Displaying same menu on every site now, depending on user.
+	  Different users: admin, Gast, default user (simply called "user")
+
+better-0.9.3
+-------------
+	- Removed calls to session_is_registered() --> deprecated since PHP 5.3.0, removed since 5.4.0.
+	  Replaced the calls by isset($_SESSION[...]).
+
+	- admin_new_logo.php:
+	    - Updated according to better-0.9.x style.
+
+	- general_methods.inc.php:
+	    - Bugfix in check_session: always calling session-start() now before returning.
+	      This enables us to call check_session(false) and still have a valid session.
+	      Used in logout.php.
+
+	- logout.php:
+	    - Updated according to better-0.9.x style, calling check_session(false).
+
+  - mail_user.php:
+      - Added display of list of users when no user was passed (i.e. neither set in $_GET nor in $_POST).
+        When a user was selected, the page continues as before.
+      - With this, the menu entry "Mail an..." will stop giving errors when called without parameters.
+        
+  - other_player.php:     
+	    - Updated according to better-0.9.x style.
+	
+	- view_gametipps.php:
+	    - Added display of a table of games in the past if no game ID was passed.
+	      When a game was selected, the page continues as before.
+      - With this, the menu entry "Spiele-Tipp" will stop giving errors when called without parameters.
+	
+	- view_meistertipps.php:
+	    - Nicened table formatting and fitted image size to size used in tab.php.
+
+better-0.9.4
+-------------
+	- moved the following global variables to general_defs.inc.php:
+	   - MIN_TORE
+	   - MAX_TORE
+	   - FLAG_WIDTH
+	   - FLAG_HEIGHT
+	   
+	- not tipped games will be displayed as "--- : ---" in tab.php, other_player.php and view_gametipps.php from now on.
+	
+	- Minor commenting & formatting improvements.
+
+better-0.9.5
+-------------
+	- Improved handling of <form>s in index_2.php, mylogin.php, neu.php and mitmachen.php:
+	    - no huge if-else-blocks anymore, but a fix place where to print errors (if any) or the initial string, respectively. 
+	- Removed all "Zurueck"-Links (not necessary anymore - the menu is always displayed!).
+	- Removed templates/Menue.php (replaced by Menue_*.php files).
+  - view_gametipps.php: Displaying list of tipps sorted by user name.
+
+  - set_result.php:
+      - critcal bugfix: 
+          When somebody did not tipp, he could still get points when the result was x:x.
+          Reason: The initial entries "Tore1:Tore2" = "99:99" were not explicitely checked when calculating the	points.
+
+	- meistertipp.php:
+	    - critical bugfix: 
+			    The variable $time was erroneously not used when querying whether the tournament winner could be set or not.
+					Therefore, one could bet the winner the whole day of the first K.O. game, not until the start of the first game.
+					Fixed by using the correct variable.
+	
+	- set_meister.php:
+	    - replaced CURDATE() call with $heute (=today()). Target: use the date of today() everywhere, so we can test certain
+			  days very easily.
+
+better-0.9.6
+-------------
+  - setup.php: Removed useless trailing "<p>" from created connect.inc.php string.
+  - Bugfix in set_meister.php:
+      - $submit was not explicitely read from $_PUT, so it was not set. --> "Submit" button did not work.
+			
+
+better-0.9.7
+-------------
+  - setup.php,
+    admin_settings.php,
+    mitmachen.php      : Added new entries for settings data base (Admin-Konto stuff, Einsatz, Nur_Bar).
+                         These entries will be used in mitmachen.php when the mail to a possible new user is sent.
+			 Also replaced several German Umlauts with the proper HTML codes.
+			
+better-0.9.8
+-------------
+  - Fixed issue http://code.google.com/p/bet-ter/issues/detail?id=13:
+	     - mitmachen.php: 
+			      - urlencoding username and password before adding the link to the mail to the admin. 
+			        Note: urldecode is done automatically in all modern browsers.
+					  - Bugfix: admin_nachname was not printed in mail to user due to wrong variable name.
+						- Replaced further German Umlauts with proper HTML codes.
+						- Removed "Zurueck zu Startseite"-Link --> non-sense: the menu is always visible.
+
+  - general_methods.inc.php:
+	    - Bugfix: user "Gast" was correctly directed to Menue_Gast, but user "gast" was directed to Menue_user.
+			          Checking spelling now and performing strtolower whenever necessary.
+
+better-0.9.9
+-------------
+  - Fixed issue http://code.google.com/p/bet-ter/issues/detail?id=10:
+	     - Replaced every occurence of $testausgabe with the method debug(), which is defined in general_methods.inc.php.
+			   Note: general_methods.inc.php now requires general_defs.inc.php, so we also removed any double requires.
+
+  - gewinnverteilung.php:
+	    - Reading value of variable $einsatz from settings database now.
+
+===========================================================================================================
+TO DO:
+  - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:
+      - Admin-Name 
+      - Admin-Kontodaten (opt.: wenn nicht angegeben, dann nur in bar!)
+      - spätester Anmeldezeitpunkt für User (Datum + (opt.) Zeit)
+      - Einsatz
+		
+	- Neue admin-Seite: 
+	    - init_user_tipps.php, bei der man sich bestimmte Benutzer aussuchen kann, die ihre Tipps [re-]initialisieren.
+	    - Dadurch kann man Test-Tipps resetten.
+			- Stufe 1: einfach alle Spieltipps auf "-1:-1" und Faktor 1 zurücksetzen.  (OK)
+			- Stufe 2: Stufe 1 für ALLE Spieler                                        (OK)
+			- Stufe 3: Stufen 1 und 2 mit drop-down-Boxen: welche Spiele zurücksetzen?
+
+  - Anzeige in tab.php zweispaltig?
+	  Dadurch enorme Platzersparnis, allerdings evtl. egal wegen "die nächsten 3"...  
+	  
+	- fuer better-v10:
+	    - Arbeiten mit Templates
+	    - Templates anlegen für Menü am Seitenanfang und Rest von <body>
+			- Rangliste / R. mit Abstand / Gewinnverteilung zusammenfassen (dann nur 1 Menüpunkt)
+			- globale defines in global_defs.inc.php definieren (z.B. $testausgabe.)
+			- "Zurück"-Seiten raus
+			- Neue Seite "Tipps von..." (die dann angezeigt ist, wenn man beim Ranking auf den Link klickt)
+      - 02.07.2014 - sb : eine Seite wie "meine Entwicklung" erstellen und einbauen, die dem User eine Übersicht gibt, die eigene Platzierung im Turnierverauf zu sehen. Idealerweise als GRAPH, als Loesung moeglich: google charts 
+      https://developers.google.com/chart/?hl=de
+      
+      
+===========================================================================================================
