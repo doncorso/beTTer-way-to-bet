@@ -128,7 +128,7 @@ $email     = $ausgabe[0];
   <tr> 
     <td align="center" colspan="2"><input type="submit" name="submit" value="Speichern" class="button"></td> 
   </tr> 
-<? } // Ende korrekte Eingabe ?>
+<?php } // Ende korrekte Eingabe ?>
 </table>
 
 </form> 
