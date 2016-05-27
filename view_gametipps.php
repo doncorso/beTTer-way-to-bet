@@ -71,32 +71,38 @@ print $menu;
 if (!isset($_GET["gid"])) {
 
   print "<div align=\"center\">";
-  print "W&auml;hle ein Spiel aus:<br><br>";
-	print('
-	<table width="50%"  border="0">
-		<tr>
-			<td><strong>Team1</strong></td>
-			<td><strong>Team2</strong></td>
-			<td><strong>Kategorie</strong></td>
-			<td><strong>Datum</strong></td>
-			<td><strong>Anpfiff</strong></td>
-		</tr>
-	');
+  $num_rows = mysql_num_rows($result_games);
+  if (!$num_rows) { // bislang noch kein Spiel vorbei
+    print "Hier werden die Tipps f&uuml;r vergangene Spiele angezeigt. Bisher sind noch keine Spiele gespielt.<br>";
+  } else { // mind. 1 Spiel vorbei
+  
+    print "W&auml;hle ein Spiel aus:<br><br>";
+  	print('
+	  <table width="50%"  border="0">
+		  <tr>
+			  <td><strong>Team1</strong></td>
+			  <td><strong>Team2</strong></td>
+			  <td><strong>Kategorie</strong></td>
+			  <td><strong>Datum</strong></td>
+			  <td><strong>Anpfiff</strong></td>
+		  </tr>
+	  ');
 	
-	while ($ausgabe = mysql_fetch_array($result_games))
-	{
-		print("
-			<tr>
-				<td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Name]		</a></td>
-				<td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Name2]		</a></td>
-				<td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Kategoriename]	</a></td>
-				<td>	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">	$ausgabe[Datum]		</a></td>
-				<td>	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">	$ausgabe[Anpfiff]	</a></td>
-			</tr>
-		");
-	}
-	print("</table>");
-	print "</div>";
+  	while ($ausgabe = mysql_fetch_array($result_games))
+  	{
+	  	print("
+		  	<tr>
+			  	<td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Name]		</a></td>
+				  <td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Name2]		</a></td>
+				  <td> 	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">  	$ausgabe[Kategoriename]	</a></td>
+				  <td>	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">	$ausgabe[Datum]		</a></td>
+				  <td>	<a href=\"". myself(). "?gid=$ausgabe[SPIEL_ID]\">	$ausgabe[Anpfiff]	</a></td>
+			  </tr>
+		  ");
+	  }
+	  print("</table>");
+	  print "</div>";
+	} // ENDE mind. 1 Spiel vorbei
   die();
 }
 

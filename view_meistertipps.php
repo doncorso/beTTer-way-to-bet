@@ -18,6 +18,31 @@ print $head;
 $menu = create_menu();
 print $menu;
 
+
+/******************************************************
+***** Spaeteste Tipp-Abgabe auslesen *****
+*******************************************************/
+	$dbanfrage = "SELECT Meister_Tipp_Date, Meister_Tipp_Time FROM settings ";                
+	$result  = mysql_db_query ($dbName, $dbanfrage, $connect);
+	$ausgabe = mysql_fetch_array ($result);
+
+  // check: kann die Tabelle ueberhaupt schon agnezeigt werden oder kann noch getippt werden?
+  $heute = today();
+  $jetzt = now();
+  
+  $mtd = $ausgabe['Meister_Tipp_Date'];
+  $mtt = $ausgabe['Meister_Tipp_Time'];
+  
+  if ($heute < $mtd || ($heute == $mtd && $jetzt < $mtt)) {
+    $fullMeisterTippTime = date_time_to_full_date($mtd, $mtt);
+
+    print '<div align="center">Hier werden die Turniersieger-Tipps angezeigt, wenn die Tipps nicht mehr ver&auml;ndert werden k&ouml;nnen, also ab:<br><br>
+           <b>'. $fullMeisterTippTime. '</b>
+           </div>';
+    die();
+  }
+
+
 /******************************
 TABELLEN SETTINGS
 *******************************/
