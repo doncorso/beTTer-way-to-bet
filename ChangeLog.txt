@@ -95,7 +95,7 @@ better-v07
       - TODO: Get latest time to register from DB. See comments.
 
   - mylogin: Nicened headline.
-  - neu: Removed unnecessary "Bitte berweisen..." text.
+  - neu: Removed unnecessary "Bitte überweisen..." text.
   - ranking & ranking_difs: Displaying number of participants.
   - sichere_seite: Fixed sequence of menu items.
   - tipphelp: Precised information.
@@ -117,12 +117,12 @@ better-v08
 		    "tomorrow" or "yesterday".
       - Added method dump() to ease dumping variables.
 		
-  - mitmachen.php: Generating text "bitte sptestens berweisen bis..." automatically.
+  - mitmachen.php: Generating text "bitte spätestens überweisen bis..." automatically.
                    Latest payment accepted: start of first game - 1 day.
 	                 Uses new method add_date() to calculate the date of one day before tournament start.
 
   - tab.php:
-	    - Added items to drop-down-box: "die nchsten/letzten 3/4/5/10 Spiele".
+	    - Added items to drop-down-box: "die nächsten/letzten 3/4/5/10 Spiele".
 			  This should enhance the usage of the list a lot.
   		- Siehe "Kein-Tipp-kein-Faktor-Bugfix" 
 			- Displaying flags in the fix size of $flagWidth and $flagHeight now, which are defined at the top of the file.
@@ -133,27 +133,27 @@ better-v08
       - Also added items to drop-down-box: "die letzten 3/4/5/10 Spiele".
         Eases overview of the other users' latest tips.
 			- Removed options "Mail an $user schreiben" and "Meine Tipps" for users "Gast" and "admin".
-			- Aus "Men" wieder "Men" gemacht. :)
+			- Aus "Men" wieder "Menü" gemacht. :)
 
 	- Kein-Tipp-kein-Faktor-Bugfix (tab.php / neu.php):
 			- neu.php:
 					- Bei neuem Spieler wird jetzt direkt einmal jedes Spiel mit 99 : 99, Faktor 1 getippt.
-						Dadurch knnen keine Faktorpunkte mehr vergessen werden, wenn jemand vergisst, zu tippen.
+						Dadurch können keine Faktorpunkte mehr vergessen werden, wenn jemand vergisst, zu tippen.
 						Vorher wurden solche Tipps mit Faktor 0 angenommen, d.h. man konnte durch Nicht-Tippen Faktorpunkte ansammeln.
 
 			- tab.php:
 			    - initiale Tipps (eigtl. 99 : 99 laut Datenbank) werden angezeigt als:
 					    0 :  0, wenn noch getippt werden kann, also das Spiel in der Zukunft liegt.
 						 -1 : -1, wenn das Spiel bereits um ist, also der Benutzer vergessen hat, das Spiel zu tippen.
-						          Damit soll dem Benutzer verdeutlicht werden, dass er hier keine Chance auf Punkte gehabt htte.
+						          Damit soll dem Benutzer verdeutlicht werden, dass er hier keine Chance auf Punkte gehabt hätte.
 
-						ACHTUNG: die 99 : 99 in der Datenbank bringt in beiden Fllen das gleiche Resultat hervor:
-						         wenn noch getippt werden kann, ist es der SW vllig freigestellt, was sie initial anzeigt,
+						ACHTUNG: die 99 : 99 in der Datenbank bringt in beiden Fällen das gleiche Resultat hervor:
+						         wenn noch getippt werden kann, ist es der SW völlig freigestellt, was sie initial anzeigt,
 										 und da bleiben wir beim bisherigen Standard von 0 : 0.
-										 Fr vergangene Spiele ist 99 : 99 ebenfalls ok, da ein Spiel niemals so ausgehen wird und man
+										 Für vergangene Spiele ist 99 : 99 ebenfalls ok, da ein Spiel niemals so ausgehen wird und man
 										 dies auch nicht tippen kann ($maxTore = 19).
 
-										 Wollte man in die Datenbank direkt -1 : -1 schreiben, msste man in der Tabelle 'tipp' den Datentyp 
+										 Wollte man in die Datenbank direkt -1 : -1 schreiben, müsste man in der Tabelle 'tipp' den Datentyp 
 										 von 'Tore1' und 'Tore2' auf signed setzen (derzeit unsigned).
 
   - meistertipp.php: removed team "noch unbekannt" from drop-down list.
@@ -167,7 +167,7 @@ better-v08
 ===========================================================================================================
 better-0.9.0
 -------------
-  - Added new "Hauptmen" (with columns "Allgemein" and "Tippen") and displayed this on every user site.
+  - Added new "Hauptmenü" (with columns "Allgemein" and "Tippen") and displayed this on every user site.
 	  The menu is created via create_menu() in general_methods.
 		Also creating some of the heads with create_head(). See FIXMEs for completion.
 
@@ -291,33 +291,38 @@ better-0.9.10
 -------------
   - sichere_seite.php:
 	    - Increased height of ChatFrame, so bigger images will be displayed without a scrollbar.
-      - Fixed some German Umlauts.
-	    
-  - view_gametipps.php,
-    view_meistertipps.php:
-      - Bugfix : displaying proper info text when no games have been played yet / the tournament winner can still be tipped.
+  
+  - Bugfix in view_gametipps.php and view_meistertipps.php:
+      - Displaying proper info text when no games have been played yet / the tournament winner can still be tipped.
+
+better-0.9.11
+-------------
+  - Fixed #4: other_player.php: Die letzten 3 = Die ersten 3
+    other_player.php, 
+    tab.php:
+      - Changed SELECT statements for categories >= 200 (= "die letzten n"): set sorting from ASC to DESC, so the right games are shown now.
       
 ===========================================================================================================
 TO DO:
   - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:
-      - sptester Anmeldezeitpunkt fr User (Datum + (opt.) Zeit)
+      - spätester Anmeldezeitpunkt für User (Datum + (opt.) Zeit)
 		
 	- Neue admin-Seite: 
 	    - init_user_tipps.php, bei der man sich bestimmte Benutzer aussuchen kann, die ihre Tipps [re-]initialisieren.
 	    - Dadurch kann man Test-Tipps resetten.
-			- Stufe 1: einfach alle Spieltipps auf "-1:-1" und Faktor 1 zurcksetzen.  (OK)
-			- Stufe 2: Stufe 1 fr ALLE Spieler                                        (OK)
-			- Stufe 3: Stufen 1 und 2 mit drop-down-Boxen: welche Spiele zurcksetzen?
+			- Stufe 1: einfach alle Spieltipps auf "-1:-1" und Faktor 1 zurücksetzen.  (OK)
+			- Stufe 2: Stufe 1 für ALLE Spieler                                        (OK)
+			- Stufe 3: Stufen 1 und 2 mit drop-down-Boxen: welche Spiele zurücksetzen?
 
   - Anzeige in tab.php zweispaltig?
-	  Dadurch enorme Platzersparnis, allerdings evtl. egal wegen "die nchsten 3"...  
+	  Dadurch enorme Platzersparnis, allerdings evtl. egal wegen "die nächsten 3"...  
 	  
 	- fuer better-v10:
 	    - Arbeiten mit Templates
-	    - Templates anlegen fr Men am Seitenanfang und Rest von <body>
-			- Rangliste / R. mit Abstand / Gewinnverteilung zusammenfassen (dann nur 1 Menpunkt)
-			- "Zurck"-Seiten raus
+	    - Templates anlegen für Menü am Seitenanfang und Rest von <body>
+			- Rangliste / R. mit Abstand / Gewinnverteilung zusammenfassen (dann nur 1 Menüpunkt)
+			- "Zurück"-Seiten raus
 			- Neue Seite "Tipps von..." (die dann angezeigt ist, wenn man beim Ranking auf den Link klickt)
-      - 02.07.2014 - sb : eine Seite wie "meine Entwicklung" erstellen und einbauen, die dem User eine bersicht gibt, die eigene Platzierung im Turnierverauf zu sehen. Idealerweise als GRAPH, als Loesung moeglich: google charts 
+      - 02.07.2014 - sb : eine Seite wie "meine Entwicklung" erstellen und einbauen, die dem User eine Übersicht gibt, die eigene Platzierung im Turnierverauf zu sehen. Idealerweise als GRAPH, als Loesung moeglich: google charts 
       https://developers.google.com/chart/?hl=de
 ===========================================================================================================

@@ -132,8 +132,8 @@ if (debug()) {
 <?php
 
 	/*********************************************************
-	** 	Datenbankanfrage, die die Spiele holt, die 	**
-	** 		zur gewhlten Kategorie gehren 	**
+	** 	Datenbankanfrage, die die Spiele holt, die  **
+	** 		zur gewaehlten Kategorie gehoeren         **
 	**********************************************************/
     
   // Suche die Spiele der passenden Kategorie
@@ -150,7 +150,7 @@ if (debug()) {
 	$dbanfrage = "  SELECT s.Datum, s.Anpfiff, t1.Name, t2.Name as Name2, s.Tore1, s.Tore2, s.SPIEL_ID, s.Team1, s.Team2, t1.TEAM_ID as TEAM_ID1, t2.TEAM_ID as TEAM_ID2
 		FROM spiel s, team t1, team t2
 		WHERE s.Team1 = t1.TEAM_ID AND s.Team2 = t2.TEAM_ID AND s.Kategorie LIKE '%' AND (s.Datum < \"$heute\" OR (s.Datum = \"$heute\" AND s.Anpfiff <= \"$time\"))
-		ORDER BY s.Datum ASC, s.Anpfiff ASC
+		ORDER BY s.Datum DESC, s.Anpfiff DESC
     LIMIT 0,". ($chosen_kat - 200);
 
 	} 
@@ -173,10 +173,10 @@ if (debug()) {
             $ausgabeTor = mysql_fetch_array ($result3);
     
        //Wenn ein Tipp abgegeben wurde
-			 // Achtung: Anzahl Tore wird als "---" angezeigt, wenn initial (bersetzung des Initialwertes 99).
+			 // Achtung: Anzahl Tore wird als "---" angezeigt, wenn initial (Uebersetzung des Initialwertes 99).
 			 //          Dies liegt daran, dass der Benutzer sofort sehen muss, dass sein nicht abgegebener Tipp
 			 //          keine Punkte bringen kann. In die DB kann man "-1" leider nicht initial eintragen, ohne
-			 //          den unsigned-Typ von "Tore1" und "Tore2" zu ndern.
+			 //          den unsigned-Typ von "Tore1" und "Tore2" zu aendern.
        if ($ausgabeTor[0] > -1 || $ausgabeTor[1] > -1 ) {
            $tor1 = correctTor($ausgabeTor[0], MIN_TORE, MAX_TORE, "---");
            $tor2 = correctTor($ausgabeTor[1], MIN_TORE, MAX_TORE, "---");

@@ -329,7 +329,7 @@ if (isset($_POST[submit])) {
 	$dbanfrage = "  SELECT s.Datum, s.Anpfiff, t1.Name, t2.Name as Name2, s.Tore1, s.Tore2, s.SPIEL_ID, s.Team1, s.Team2, t1.TEAM_ID as TEAM_ID1, t2.TEAM_ID as TEAM_ID2
 		FROM spiel s, team t1, team t2
 		WHERE s.Team1 = t1.TEAM_ID AND s.Team2 = t2.TEAM_ID AND s.Kategorie LIKE '%' AND (s.Datum < \"$heute\" OR (s.Datum = \"$heute\" AND s.Anpfiff <= \"$time\"))
-		ORDER BY s.Datum ASC, s.Anpfiff ASC
+		ORDER BY s.Datum DESC, s.Anpfiff DESC
     LIMIT 0,". ($chosen_kat - 200);
 
 	} else if ($chosen_kat >= 100) { // = "nächste n Events", muss andere Abfrage ergeben
@@ -343,8 +343,7 @@ if (isset($_POST[submit])) {
 		ORDER BY s.Datum ASC, s.Anpfiff ASC
     LIMIT 0,". ($chosen_kat - 100);
 	}
-
-		
+	
  	$result = mysql_db_query ($dbName, $dbanfrage, $connect);
 
 
