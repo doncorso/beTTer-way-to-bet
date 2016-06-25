@@ -19,7 +19,7 @@ $user = $_SESSION['user'];
 aktuelle Zeit holen
 *******************/
 $heute = today();
-$time  = now();
+$jetzt = now();
 
 /***********************
 Spaeteste Tippabgabezeit <-----
@@ -41,6 +41,16 @@ $ausgabezeit  = $time[0].':'.$time[1];
 //  print "GLOBALS = "; print "<pre>"; var_dump($GLOBALS); print "</pre>";
 //}
 
+//if (debug()) {
+//  dump($ausgabe);
+//}
+
+if (debug()) {
+  print "heute    = $heute<br>";
+  print "jetzt    = $jetzt<br>";
+  print "tippdate = $tippdate<br>";
+  print "tipptime = $tipptime<br>";
+}
 ?> 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -107,7 +117,8 @@ else
 	** 	Wenn noch getippt werden darf (Anpfiff)	**
 	**************************************************/
 
-	if (($heute < $tippdate) || ($heute == $tippdate && $time < $tipptime))
+
+	if (($heute < $tippdate) || ($heute == $tippdate && $jetzt < $tipptime))
 	{
 		$db_getTeams = "SELECT TEAM_ID, Name 
 		                FROM team 

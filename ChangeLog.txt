@@ -301,6 +301,11 @@ better-0.9.11
     other_player.php, 
     tab.php:
       - Changed SELECT statements for categories >= 200 (= "die letzten n"): set sorting from ASC to DESC, so the right games are shown now.
+
+better-0.9.12
+-------------
+  - Bugfix in meistertipp.php:
+      - Using variable "$jetzt" now for comparing time (used wrong variable $time before, so the comparison failed even when the time was still ok).
       
 ===========================================================================================================
 TO DO:
