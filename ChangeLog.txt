@@ -307,6 +307,12 @@ better-0.9.12
   - Bugfix in meistertipp.php:
       - Using variable "$jetzt" now for comparing time (used wrong variable $time before, so the comparison failed even when the time was still ok).
       
+better-0.9.13
+-------------
+  - Bugfixes in neu.php and mitmachen.php:
+      - Fixed encoding of mails such that the text is for sure UTF8-encoded.
+      - Therefore, added method email_header() to general_methods.inc.php.
+
 ===========================================================================================================
 TO DO:
   - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:

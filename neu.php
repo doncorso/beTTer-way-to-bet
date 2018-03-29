@@ -172,25 +172,23 @@ if (isset($_POST['submit']) && $err === true) { // Alles OK, Benutzer angelegt
 	/********************
 	 **  Send E-Mail   **
 	 ********************/
-	$text="Hallo $userName, \n
-	Der beTTer - Administrator hat soeben Deinen Account freigeschaltet:\n
-	\n
-	Username: $userName
-	Passwort: $passwd
-	\n
-	Hier geht's zum Login: $url\n\n
-	Nach dem LogIn kannst Du Dein Passwort unter MEINE DATEN ändern.\n
-	Das Passwort wird verschlüsselt gespeichert und kann auch vom\n
-	Administrator nicht ausgelesen werden. Falls Du es vergisst, musst\n
-	Du Dir ueber den Link auf der Startseite ein neues Passwort generieren\n
-	lassen. Da Du eine E-Mail Adresse angegeben hast, bekommst Du Dein neues\n
-	Passwort dann per mail zugesandt.\n\n
-	Wenn Du mit dem Administrator in Kontakt treten willst, so erreichst Du ihn\n
-	unter der E-Mail-Adresse: $adminsmail\n\n
-	Viel Erfolg beim Tippen und viel Spass mit beTTer - the better way to bet.\n
-	\n\n\n\n\n\n\n\n";
+	$text="Hallo ". utf8_encode($userName). ", \n
+Der beTTer - Administrator hat soeben Deinen Account freigeschaltet:\n
+Username: ". utf8_encode($userName). "
+Passwort: ". utf8_encode($passwd). "
+\n
+Hier geht's zum Login: $url\n\n". utf8_encode("
+Nach dem LogIn kannst Du Dein Passwort unter MEINE DATEN ändern.\n
+Das Passwort wird verschlüsselt gespeichert und kann auch vom\n
+Administrator nicht ausgelesen werden. Falls Du es vergisst, musst\n
+Du Dir über den Link auf der Startseite ein neues Passwort generieren\n
+lassen. Da Du eine E-Mail Adresse angegeben hast, bekommst Du Dein neues\n
+Passwort dann per mail zugesandt.\n\n
+Wenn Du mit dem Administrator in Kontakt treten willst, so erreichst Du ihn\n
+unter der E-Mail-Adresse: $adminsmail\n\n
+Viel Erfolg beim Tippen und viel Spass mit beTTer - the better way to bet.\n\n\n");
 	 
-	mail($email, "Account bei beTTer angelegt", $text);
+	mail($email, "Account bei beTTer angelegt", $text, email_header($adminsmail));
 
 	/***************************************************************************************************
 	 *  Erstmalig für den Benutzer tippen: alle Spiele mit -1:-1 und Faktor 1.
