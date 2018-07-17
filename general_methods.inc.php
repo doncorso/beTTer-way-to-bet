@@ -2,6 +2,26 @@
 require_once "general_defs.inc.php";
 
 // -------------------------------------------------------------------------------------------
+//	email_header()
+//	Gibt den Standard-Header für Emails zurück.
+//
+//	Parameter:
+//	$sender : Die Email-Adresse des Senders
+//
+//  ACHTUNG:
+//    Der Text wird UTF8-codiert.
+//    Umlaute funktionieren daher immer, wenn man sie einfach in den Text reinschreibt.
+//    Umlaute, die in VARIABLEN gespeichert sind, sollten vorher mit utf8_encode() kodiert werden!
+// -------------------------------------------------------------------------------------------
+function email_header($sender) {
+  $headers   = array();
+  $headers[] = "MIME-Version: 1.0";
+  $headers[] = "Content-type: text/plain; charset=utf-8";
+  $headers[] = "From: {$sender}";
+  return implode("\r\n", $headers);
+}
+
+// -------------------------------------------------------------------------------------------
 //	today()
 //	Gibt das heutige Datum (im richtigen Format) zurück.
 // -------------------------------------------------------------------------------------------

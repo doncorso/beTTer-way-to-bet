@@ -217,18 +217,18 @@ if (isset($_POST['submit']) && $err === true) {
   mail($adminsmail, "neuer user: $username", $text);
 
   // Mail an User: Freischaltungs- und Bezahl-Hinweise, Admin-Kontaktdaten etc.
-  $text_konto =
-"Du kannst ihm den Einsatz entweder in bar geben oder &uuml;berweisen an:\n
+  $text_konto = 
+"Du kannst ihm den Einsatz entweder in bar geben oder &uuml;berweisen an:\n". utf8_encode("
   $admin_vorname $admin_nachname
   BLZ/BIC : $admin_bic
   KTN/IBAN: $admin_iban
   Betrag  : $einsatz Euro
-  Verwendungszweck: $username";
+  Verwendungszweck: $username");
 
   $text_bar = "Bitte gib ihm den Einsatz in bar.";
 
-        $text_user = "
-Hallo $vorname,\n
+  $text_user = 
+"Hallo ". utf8_encode($vorname). ",\n
 um Deinen beTTer-Account freischalten zu lassen, musst Du dem Administrator noch
 Deinen Einsatz zukommen lassen, und zwar bis zum %latest_reg%.
 Turnierbeginn ist am %turnier_start%.
@@ -253,12 +253,12 @@ Dein Admin ;)
                 $text_user = str_replace("%text_bezahlung%", $text_konto, $text_user); // ersetze %text_bezahlung%
   }
 
-  mail($mail, "Dein Einsatz", $text_user);
+  mail($mail, "Dein Einsatz", $text_user, email_header($adminsmail));
 
-        print ("<h5>");
-        echo '<br><p align="center">Formular wurde erfolgreich versandt!<br>';
-        print("Der Adminstrator wird mit Dir &uuml;ber $_POST[mail] Kontakt aufnehmen.<br><br>");
-        print("</h5>");
+  print ("<h5>");
+  echo '<br><p align="center">Formular wurde erfolgreich versandt!<br>';
+  print("Der Adminstrator wird mit Dir &uuml;ber $_POST[mail] Kontakt aufnehmen.<br><br>");
+  print("</h5>");
 }
 
 ?>

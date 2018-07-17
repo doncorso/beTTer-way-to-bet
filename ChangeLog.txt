@@ -309,7 +309,9 @@ better-0.9.12
 
 better-0.9.13
 -------------
-  - Fixed some typos in mitmachen.php and connect.inc.php.
+  - Bugfixes in neu.php and mitmachen.php:
+      - Fixed encoding of mails such that the text is for sure UTF8-encoded.
+      - Therefore, added method email_header() to general_methods.inc.php.
 
 ===========================================================================================================
 TO DO:
