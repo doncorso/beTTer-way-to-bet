@@ -122,14 +122,14 @@ Punkte kannst du nach dem folgendem Schema sammeln:<br></p>
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
     <p class="MsoNormal">3:1 --- 
 		  <?php 
-	  	print("$ausgabe[Punkte_korrekter_Tipp] Punkt"); 
+	  	print("<b>$ausgabe[Punkte_korrekter_Tipp]</b> Punkt"); 
 		if ( $ausgabe[Punkte_korrekter_Tipp] != 1 )
 		{
 			print("e");
 		}
 		?>
 	
-	 Punkte (exaktes Ergebnis getippt)</td>
+	 (exaktes Ergebnis getippt)</td>
   </tr>
   <tr>
     <td width="163" valign="top" style="width: 122.4pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
@@ -137,7 +137,7 @@ Punkte kannst du nach dem folgendem Schema sammeln:<br></p>
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
     <p class="MsoNormal">2:0 --- 
 	   <?php 
-   	print("$ausgabe[Punkte_korrekte_Tore] Punkt");
+   	print("<b>$ausgabe[Punkte_korrekte_Tore]</b> Punkt");
 		if ( $ausgabe[Punkte_korrekte_Tore] != 1 )
 		{
 			print("e");
@@ -151,7 +151,7 @@ Punkte kannst du nach dem folgendem Schema sammeln:<br></p>
     <p class="MsoNormal">Spielausgang:</td>
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
     <p class="MsoNormal">5:0 --- 	   <?php 
-   	print("$ausgabe[Punkte_korrekter_Sieger] Punkt");
+   	print("<b>$ausgabe[Punkte_korrekter_Sieger]</b> Punkt");
 		if ( $ausgabe[Punkte_korrekter_Sieger] != 1 )
 		{
 			print("e");
@@ -162,7 +162,7 @@ Punkte kannst du nach dem folgendem Schema sammeln:<br></p>
     <td width="163" valign="top" style="width: 122.4pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
     <p class="MsoNormal">Spielausgang:</td>
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm">
-    <p class="MsoNormal">0:1 --- 0 Punkte (Leider falsch getippt)</td>
+    <p class="MsoNormal">0:1 --- <b>0</b> Punkte (Leider falsch getippt)</td>
   </tr>
 </table>
 <p class="MsoNormal">&nbsp;</p>
@@ -197,7 +197,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm; background: #EFFFEF">
     <p class="MsoNormal">3:1 --- 
 	<?php 
-   	print("$ausgabe[Punkte_korrekter_Tipp] Punkt");
+   	print("<b>$ausgabe[Punkte_korrekter_Tipp]</b> Punkt");
 		if ( $ausgabe[Punkte_korrekter_Tipp] != 1 )
 		{
 			print("e");
@@ -212,7 +212,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <p class="MsoNormal">
 	1 * <?php print("$ausgabe[Punkte_korrekter_Tipp]");
 	$Points= 1* $ausgabe[Punkte_korrekter_Tipp];
-	print(" = $Points --- $Points Punkt");
+	print(" = $Points --- <b>$Points</b> Punkt");
 	if ( $Points != 1 )
 		{
 			print("e");
@@ -229,7 +229,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <p class="MsoNormal"> 
 	2 * <?php print("$ausgabe[Punkte_korrekter_Tipp]");
 	$Points= 2* $ausgabe[Punkte_korrekter_Tipp];
-	print(" = $Points --- $Points Punkt");
+	print(" = $Points --- <b>$Points</b> Punkt");
 	if ( $Points != 1 )
 		{
 			print("e");
@@ -248,7 +248,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <p class="MsoNormal">
 	3 * <?php print("$ausgabe[Punkte_korrekter_Tipp]");
 	$Points= 3* $ausgabe[Punkte_korrekter_Tipp];
-	print(" = $Points --- $Points Punkt");
+	print(" = $Points --- <b>$Points</b> Punkt");
 	if ( $Points != 1 )
 		{
 			print("e");
@@ -266,7 +266,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <td width="348" valign="top" style="width: 261.0pt; border: medium none; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0cm; padding-bottom: 0cm; background: white">
     <p class="MsoNormal">4 * <?php print("$ausgabe[Punkte_korrekter_Tipp]");
 	$Points= 4* $ausgabe[Punkte_korrekter_Tipp];
-	print(" = $Points --- $Points Punkt");
+	print(" = $Points --- <b>$Points</b> Punkt");
 	if ( $Points != 1 )
 		{
 			print("e");
@@ -284,7 +284,7 @@ gewertet, bei zwei Faktorpunkten wird sie verdoppelt, bei drei verdreifacht usw.
     <p class="MsoNormal">
 	5 * <?php print("$ausgabe[Punkte_korrekter_Tipp]");
 	$Points= 5* $ausgabe[Punkte_korrekter_Tipp];
-	print(" = $Points --- $Points Punkt");
+	print(" = $Points --- <b>$Points</b> Punkt");
 	if ( $Points != 1 )
 		{
 			print("e");
@@ -315,8 +315,8 @@ $date_weltmeister_tipp .= ", ". $help[0]. ":". $help[1]. " Uhr";
 <p class="MsoNormal" align="center"><u><b><font size="5"><?php print("$ausgabe[Meistername]");?>-Tipp</font></b></u></p>
 <p class="MsoNormal" align="center">&nbsp;</p>
 <p class="MsoNormal">Ein erfolgreicher  <?php print("$ausgabe[Meistername]");?>-Tipp
-					bringt Dir zusätzliche 
-					<?php print("$ausgabe[Meister_Tipp_Points] ");?>
+					bringt Dir zus&auml;tzliche
+					<b><?php print("$ausgabe[Meister_Tipp_Points] ");?></b>
 					Punkte auf Dein Konto.<br>
 					Beachte: Der Tipp muss bis spätestens zum Beginn des ersten Spiels nach der Vorrunde abgegeben werden, 
 					also bis zum <b><?php print("$date_weltmeister_tipp");?></b>.</p>

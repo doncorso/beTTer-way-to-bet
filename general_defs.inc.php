@@ -3,7 +3,7 @@
 //	Die aktuelle Versionsnummer.
 //  Wird benutzt in index_2.php.
 // -------------------------------------------------------------------------------------------
-define ("VERSION", "0.9.13");
+define ("VERSION", "0.9.14");
 
 // -------------------------------------------------------------------------------------------
 //	Min. und Max. der vergebbaren Tore (beeinflusst u.a. die Auswahllisten in tab.php).

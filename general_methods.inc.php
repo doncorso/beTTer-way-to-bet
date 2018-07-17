@@ -716,6 +716,19 @@ function debug() {
 	return false;
 }
 
+// -------------------------------------------------------------------------------------------
+//	rfpAsString()
+//	Gibt die restlichen Faktorpunkte (inkl. Durchschnitt pro Spiel) als String zurueck.
+// -------------------------------------------------------------------------------------------
+function rfpAsString($restFaktor, $avgFaktor) {
+
+  $res = "Restliche Faktor-Punkte: $restFaktor (&#216; ";
+  $res .= sprintf("%.2f", $avgFaktor);
+  $res .= ")";
+  return $res;
+}
+
+
 /*
 // Activate for testing!
 $a = "2012-06-08";

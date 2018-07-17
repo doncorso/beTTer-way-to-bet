@@ -218,7 +218,7 @@ if (isset($_POST['submit']) && $err === true) {
 
   // Mail an User: Freischaltungs- und Bezahl-Hinweise, Admin-Kontaktdaten etc.
   $text_konto = 
-"Du kannst ihm den Einsatz entweder in bar geben oder &uuml;berweisen an:\n". utf8_encode("
+"Du kannst ihm den Einsatz entweder in bar geben oder überweisen an:\n". utf8_encode("
   $admin_vorname $admin_nachname
   BLZ/BIC : $admin_bic
   KTN/IBAN: $admin_iban
@@ -235,11 +235,11 @@ Turnierbeginn ist am %turnier_start%.
 
 %text_bezahlung%
 
-Bei Fehlangaben bekommst Du Deinen Einsatz zur&uuml;ck, kannst aber nicht teilnehmen.
-Du kannst &uuml;ber folgende Adresse mit dem Administrator Kontakt aufnehmen:
+Bei Fehlangaben bekommst Du Deinen Einsatz zurück, kannst aber nicht teilnehmen.
+Du kannst über folgende Adresse mit dem Administrator Kontakt aufnehmen:
 $adminsmail
 
-Viel Erfolg bei beTTer w&uuml;nscht Dir
+Viel Erfolg bei beTTer wünscht Dir
 Dein Admin ;)
 ";
 

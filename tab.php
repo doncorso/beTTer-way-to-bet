@@ -114,6 +114,12 @@ $resultA = mysql_query($db_getAnzSpiele);
 $ausgabeA = mysql_fetch_array ($resultA);
 $faktorMin = $ausgabeA[0];
 
+//Holt Anzahl Spiele (=minimal vergebene Faktorpunkte)
+$db_getAnzRestSpiele = "SELECT COUNT(*) FROM `spiel` WHERE Datum > \"$heute\" OR (Datum = \"$heute\" AND Anpfiff > \"$time\") ";
+$resultB = mysql_query($db_getAnzRestSpiele);
+$ausgabeB = mysql_fetch_array ($resultB);
+$anzRestSpiele = $ausgabeB[0];
+
 //print("<br><hr><br> FaktorMax= $faktorMax <br> SummeFaktor = $SummeFaktor <br><br><hr><br>");
 
 // Hat user schon einmal getippt?
@@ -379,7 +385,8 @@ if (isset($_POST[submit])) {
 				Summe gesamte Faktorpunkte der Kategorie <strong>$chosen_kat</strong>: $SGFK <br>
 				Summe der nicht mehr zu &auml;ndernden FPs dieser Kategorie weil Spiel in der Vergangenheit:$SGFKV <br>
 				Summe neu verteilte Faktorpunkte: $SNVF <br>
-				Gesamt verggebbare FaktorPunkte: $userKonto
+				Gesamt verggebbare FaktorPunkte: $userKonto <br>
+				Durchschnittl. Faktorpunkte pro Spiel: $avgFPS
 				");
 		}
 			$zuvielefaktorpunktevergeben = false;
@@ -695,12 +702,19 @@ if (!$SummeFaktor) {  // d.h. diese Seite wurde zum 1. Mal aufgerufen
   if (debug()) { print "<pre>SummeFaktor neu = $SummeFaktor</pre>"; }
 }
 
+// Anz. restl. Faktorpunkte insges.
 $RestFaktorPunkte = $faktorMax - $SummeFaktor;
-if (debug()) { print "<pre>RestFaktorPunkte= $RestFaktorPunkte</pre>"; }
 if ($RestFaktorPunkte > $faktorMax)
 {
     $RestFaktorPunkte = $faktorMax;
 }
+
+// Durchschnittl. Anzahl Faktorpunkte pro Spiel
+//  - Minium: 1
+//  - bei n Spielen: zusaetzl. n Faktorpunkte
+//  - avg = 1 + restl. Faktorpunkte / Anz. zukuenftiger Spiele
+$avgFPS = 1 + $RestFaktorPunkte / $anzRestSpiele;
+if (debug()) { print "<pre>"; print (rfpAsString($RestFaktorPunkte, $avgFPS)); print "</pre>"; }
 
 print("<table width=\"50%\" bgcolor=\"#000000\" border=\"0\" cellpadding=\"5\" cellspacing=\"1\" align=\"center\">");
 
@@ -713,33 +727,34 @@ if ($zuvielefaktorpunktevergeben == true)
 elseif(isset($_POST[submit]))
 {
 	print ("<th bgcolor=\"#e7e7e7\" align=\"center\" colspan=\"0\">");
-        print(" Deine Daten wurden gespeichert!<br>Restliche Faktor-Punkte: $RestFaktorPunkte ");
+  print (" Deine Daten wurden gespeichert!<br>");
+  print(rfpAsString($RestFaktorPunkte, $avgFPS));
 }
 else
 {
+		if (debug()) {
+  		// Durchschnittl. Anzahl Faktorpunkte pro Spiel
+  		//  - Minium: 1
+  		//  - bei n Spielen: zusaetzl. n Faktorpunkte
+  		//  - avg = 1 + restl. Faktorpunkte / Anz. zukuenftiger Spiele
+  		//$avgFPS = $RestFaktorPunkte / $faktorMin; // $faktorMin = min. setzbare Faktoren, also Anz. Spiele!
+  		//$avgFPS = $faktorMax / $SummeFaktor; // $faktorMin = min. setzbare Faktoren, also Anz. Spiele!
+			print("<br><br><hr><br>
+				Restl. Faktorpunkte: $RestFaktorPunkte <br>
+				Restl. Spiele: $anzRestSpiele <br>
+				Durchschnittl. Faktorpunkte pro Spiel: &#216;");
+				printf("%.2f",$avgFPS); 
+		}
+
 	print ("<th bgcolor=\"#e7e7e7\" align=\"center\" colspan=\"0\">");
-        print("Restliche Faktor-Punkte: $RestFaktorPunkte ");
+  print(rfpAsString($RestFaktorPunkte, $avgFPS));
 }
 
 print("<br></th>");
 print("</table>");
-print("<br><hr><br><br>");
-
-
-
+print("<br><hr><br>");
 ?>
-    
-    <br><br>  <a href="sichere_seite.php">Men&uuml;</a>   <br><br>
-    <a href="logout.php">LogOut</a>   <br><br>
-
-    
-
-
 <input type="submit" name="submit" value=" Absenden ">
 </form>
-
-
 </body>
 </html>
-
- 

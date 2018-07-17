@@ -453,8 +453,8 @@ auf das obere Drittel der Tippgemeinschaft (abgerundet), und zwar mit einer expo
 <b>Wichtig:</b> stehen mehrere Kandidaten auf dem gleichen Platz, teilen sie sich den Gewinn aus der Summe der Pl&auml;tze.<br><br>
 
 <b>Beispiel:</b><br>
-Der Gewinn für Platz 1 sei <b>80 Euro</b>, für Platz 2 <b>50 Euro</b>, zusammen <b>130</b> Euro. Stehen 2 Leute auf Platz 1, bekommt jeder <b>65</b> Euro.<br>
-Dabei kann es durchaus vorkommen, dass der Spieler auf dem nachfolgenden Platz mehr gewinnt als die Spieler vor ihm, wenn er nichts teilen muss!
+Der Gewinn f&uuml;r Platz 1 sei <b>80 Euro</b>, f&uuml;r Platz 2 <b>50 Euro</b>, zusammen <b>130</b> Euro. Stehen 2 Leute auf Platz 1, bekommt jeder <b>65</b> Euro.<br>
+Es kann dabei niemals vorkommen, dass der Spieler auf dem nachfolgenden Platz mehr gewinnt als die Spieler vor ihm.
 <br><br>		
 </div>
 

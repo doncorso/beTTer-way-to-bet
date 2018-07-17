@@ -313,6 +313,12 @@ better-0.9.13
       - Fixed encoding of mails such that the text is for sure UTF8-encoded.
       - Therefore, added method email_header() to general_methods.inc.php.
 
+better-0.9.14
+-------------
+  - Improved output in tipphelp.php and gewinnverteilung.php.
+  - Fixed #6: tab.php: Durchschnittl. Faktoren angeben
+      - Added average factors left per match (at the beginning: n matches, n * 2 factors ==> avg. 2 factors / match).
+
 ===========================================================================================================
 TO DO:
   - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:
