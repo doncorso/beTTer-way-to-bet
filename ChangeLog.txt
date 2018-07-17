@@ -306,7 +306,11 @@ better-0.9.12
 -------------
   - Bugfix in meistertipp.php:
       - Using variable "$jetzt" now for comparing time (used wrong variable $time before, so the comparison failed even when the time was still ok).
-      
+
+better-0.9.13
+-------------
+  - Fixed some typos in mitmachen.php and connect.inc.php.
+
 ===========================================================================================================
 TO DO:
   - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:
