@@ -319,6 +319,12 @@ better-0.9.14
   - Fixed #6: tab.php: Durchschnittl. Faktoren angeben
       - Added average factors left per match (at the beginning: n matches, n * 2 factors ==> avg. 2 factors / match).
 
+better-0.9.15
+-------------
+  - Fixup for fix of #6: tab.php: Durchschnittl. Faktoren angeben
+      - Eased (and fixed) average factor calculation.
+      - Avoid usage of German Umlauts in comments.
+
 ===========================================================================================================
 TO DO:
   - Folgendes in setup.php abfragen und in die Anmeldungsmail (mitmachen.php) einbauen:

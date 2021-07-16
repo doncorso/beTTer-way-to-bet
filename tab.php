@@ -30,10 +30,10 @@ print $menu;
 require("connect.inc.php");
 
 /*****************************************************************
- Es folgt allerlei Berechnungskram, der später verwendet wird...
+ Es folgt allerlei Berechnungskram, der spaeter verwendet wird...
  ******************************************************************/
 
-// Heutiges Datum und Uhrzeit auslesen (für Abgleich: Spiel(e) in der Zukunft / Vergangenheit)
+// Heutiges Datum und Uhrzeit auslesen (fuer Abgleich: Spiel(e) in der Zukunft / Vergangenheit)
 $heute = today();
 $time  = now();
 
@@ -44,7 +44,7 @@ $ausgabeID = mysql_fetch_array ($result1);
 $userID = $ausgabeID[0];
 $userKonto = $ausgabeID[Konto];
 
-// Filterung initial auf "die nächsten 3" stellen
+// Filterung initial auf "die naechsten 3" stellen
 $chosen_kat="103";
 	
 // Uebergebener Parameter, der Filterung festlegt
@@ -55,7 +55,7 @@ if ($_POST[kat] > 0 || $_POST[kat] == "%") $chosen_kat = $_POST[kat];
 
 // kat_flag ist das eigentliche Kategorie-Flag, das beim Datenbank-Zugriff benutzt wird
 $kat_flag = $chosen_kat;
-if ($chosen_kat >= 100) { // values >= 100 sind spezielle Optionen wie z.B. "Die nächsten x Spiele", ergo: nimm alle Kategorien
+if ($chosen_kat >= 100) { // values >= 100 sind spezielle Optionen wie z.B. "Die naechsten x Spiele", ergo: nimm alle Kategorien
   $kat_flag = "%";
 }
 
@@ -71,7 +71,7 @@ $res_SGFK = mysql_db_query($dbName,$calc_SGFK, $connect);
 $SGFK_out = mysql_fetch_array($res_SGFK); 
 $SGFK =  $SGFK_out[katfats];
 
-// Summe Gesetzter Faktorpunkte Kategorie in der VERGANGENHEIT (nicht mehr änderbar !!!)
+// Summe Gesetzter Faktorpunkte Kategorie in der VERGANGENHEIT (nicht mehr aenderbar !!!)
 $SGFKV = 0;
 $calc_SGFKV=("SELECT SUM(t.Faktor) as katfatsverg FROM tipp t, spiel s WHERE t.USER_ID=$userID AND t.SPIEL_ID=s.SPIEL_ID AND s.Kategorie LIKE '$kat_flag' AND (s.Datum < \"$heute\" OR (s.Datum = \"$heute\" AND s.Anpfiff < \"$time\"))");
 
@@ -80,10 +80,10 @@ $SGFKV_out = mysql_fetch_array($res_SGFKV);
 $SGFKV =  $SGFKV_out[katfatsverg];
 
 if (debug()) { 
-	print("<br> calc_SGFKV: $calc_SGFKV <br>");
+	print("<pre> calc_SGFKV: ". dump($SGFKV_out). " </pre>");
 }
 
-// TotalPoints werden BERECHNET (Summe der SpielPunkteSpalte des aktuellen users !                                                                               
+// TotalPoints werden BERECHNET (Summe der SpielPunkteSpalte des aktuellen users)
 $calc_sum=("SELECT SUM(SpielPunkte) as total FROM tipp WHERE USER_ID=$userID");
 $calc_pointsum=mysql_db_query($dbName,$calc_sum, $connect); 
 $data = mysql_fetch_array($calc_pointsum); 
@@ -91,9 +91,15 @@ $totalpoints =  $data[total];
 if ($totalpoints =="") $totalpoints = 0;
 
 //Bisher gesetzte Faktorpunkte des users holen
-$calc_sumfak=("SELECT SUM(Faktor) as totalF FROM tipp WHERE USER_ID=$userID");
+$calc_sumfak=("SELECT COUNT(*) as numTipps, SUM(Faktor) as totalF FROM tipp WHERE USER_ID=$userID");
 $calc_faksum=mysql_db_query($dbName,$calc_sumfak, $connect); 
 $faksum = mysql_fetch_array($calc_faksum); 
+
+if (debug()) {
+	print("<br> totalF  : ". $faksum[totalF]. " <br>");
+  print("<br> numTipps: ". $faksum[numTipps]. " <br>");
+}
+
 $SummeFaktor =  $faksum[totalF];
 
 //Holt Maximal zusaetzlich vergebbare Faktorpunkte
@@ -101,12 +107,6 @@ $db_getFaktor = "SELECT Konto FROM `user` WHERE USER_ID=$userID";
 $resultF = mysql_query($db_getFaktor);
 $ausgabeF = mysql_fetch_array ($resultF);
 $faktorMax = $ausgabeF[0];
-
-//Bisher gesetzte Faktorpunkte des users holen
-$calc_sumfak=("SELECT SUM(Faktor) as totalF FROM tipp WHERE USER_ID=$userID");
-$calc_faksum=mysql_db_query($dbName,$calc_sumfak, $connect); 
-$faksum = mysql_fetch_array($calc_faksum); 
-$SummeFaktor =  $faksum[totalF];
 
 //Holt Anzahl Spiele (=minimal vergebene Faktorpunkte)
 $db_getAnzSpiele = "SELECT COUNT(*) FROM `spiel`";
@@ -120,6 +120,9 @@ $resultB = mysql_query($db_getAnzRestSpiele);
 $ausgabeB = mysql_fetch_array ($resultB);
 $anzRestSpiele = $ausgabeB[0];
 
+// Spiele in der Vergangenheit = Spiele ges. - zukuenftige Spiele
+$anzSpieleVerg = $faktorMin - $anzRestSpiele;
+
 //print("<br><hr><br> FaktorMax= $faktorMax <br> SummeFaktor = $SummeFaktor <br><br><hr><br>");
 
 // Hat user schon einmal getippt?
@@ -129,7 +132,7 @@ $ausgabeA2 = mysql_fetch_array ($resultA2);
 $firstTip = ($ausgabeA2[0] == 0);
 
 /**********************************************************************************
-Prüfen, ob bereits Spiele gelaufen sind und die Anzahl Faktorpunkte abziehen 
+Pruefen, ob bereits Spiele gelaufen sind und die Anzahl Faktorpunkte abziehen
 (d.h. nicht getippt = Faktor 1)
 **********************************************************************************/  
 
@@ -192,21 +195,21 @@ Prüfen, ob bereits Spiele gelaufen sind und die Anzahl Faktorpunkte abziehen
 //      //FIXME!!! Add tipp with Tore1/2 = -1, TippPunkte = 0, Faktor = 1, Spielpunkte = 0!!!
 //    }
 //
-//    // internen Datenzeiger wieder auf Anfang von getippt setzen, sonst: nächster Schleifendurchlauf falsch    
+//    // internen Datenzeiger wieder auf Anfang von getippt setzen, sonst: naechster Schleifendurchlauf falsch
 //		if ($num_getippt > 0) {
 //			mysql_data_seek($result_getippt, 0);
 //		}
 //  }
 //}
 //
-//// internen Datenzeiger wieder auf Anfang von letzte_spiele setzen, damit später keine Verwirrungen passieren
+//// internen Datenzeiger wieder auf Anfang von letzte_spiele setzen, damit spaeter keine Verwirrungen passieren
 //if ($num_letzte_spiele > 0) {
 //	mysql_data_seek($result_letzte_spiele, 0);
 //}
 
 
 /*****************************************************************
- Ende Berechnungskram, der später verwendet wird...
+ Ende Berechnungskram, der spaeter verwendet wird...
  ******************************************************************/
 
 if (isset($_POST[submit])) {
@@ -255,7 +258,7 @@ if (isset($_POST[submit])) {
 	$result_katos = mysql_db_query($dbName, $db_get_katos, $connect);
 		
 		/*************************
-		**  Fülle DropDown-Box  **
+		**  Fuelle DropDown-Box  **
 		**************************/
 		// Extra-Optionen (Annahme: wir werden nie mehr als 100 Kategorien haben)
 		print("<option value=103");
@@ -290,7 +293,7 @@ if (isset($_POST[submit])) {
 	 	if($chosen_kat=="210") print(" selected");
    	print(">Die letzten 10</option>");
 
-    // Reine Kategorien hinzufügen 
+    // Reine Kategorien hinzufuegen 
 		while($katos_ausgabe = mysql_fetch_array($result_katos))
 		{
 			print("<option value=\"$katos_ausgabe[KATEGORIE_ID]\"");
@@ -318,7 +321,7 @@ if (isset($_POST[submit])) {
 
 	/*********************************************************
 	** 	Datenbankanfrage, die die Spiele holt, die 	**
-	** 		zur gewählten Kategorie gehören 	**
+	** 		zur gewaehlten Kategorie gehoeren 	**
 	**********************************************************/
 
   // Suche die Spiele der passenden Kategorie
@@ -329,8 +332,8 @@ if (isset($_POST[submit])) {
 		
 	if ($chosen_kat >= 200) { // = "letzte n Events", muss andere Abfrage ergeben
 
-  // Suche die letzten n Spiele. Logik: $chosen_kat enthält bereits die Anzahl zu suchender Spiele, man muss nur 200 abziehen.
-	// Grund: Da $chosen_kat eine Zahl zurückgibt, die der ausgewählten Kategorie entspricht, musste hierfür zuvor 200 hinzuaddiert werden,
+  // Suche die letzten n Spiele. Logik: $chosen_kat enthaelt bereits die Anzahl zu suchender Spiele, man muss nur 200 abziehen.
+	// Grund: Da $chosen_kat eine Zahl zurueckgibt, die der ausgewaehlten Kategorie entspricht, musste hierfuer zuvor 200 hinzuaddiert werden,
 	// damit die Auswahl eindeutig bleibt.
 	$dbanfrage = "  SELECT s.Datum, s.Anpfiff, t1.Name, t2.Name as Name2, s.Tore1, s.Tore2, s.SPIEL_ID, s.Team1, s.Team2, t1.TEAM_ID as TEAM_ID1, t2.TEAM_ID as TEAM_ID2
 		FROM spiel s, team t1, team t2
@@ -338,10 +341,10 @@ if (isset($_POST[submit])) {
 		ORDER BY s.Datum DESC, s.Anpfiff DESC
     LIMIT 0,". ($chosen_kat - 200);
 
-	} else if ($chosen_kat >= 100) { // = "nächste n Events", muss andere Abfrage ergeben
+	} else if ($chosen_kat >= 100) { // = "naechste n Events", muss andere Abfrage ergeben
 
-  // Suche die nächsten n Spiele. Logik: $chosen_kat enthält bereits die Anzahl zu suchender Spiele, man muss nur 100 abziehen.
-	// Grund: Da $chosen_kat eine Zahl zurückgibt, die der ausgewählten Kategorie entspricht, musste hierfür zuvor 100 hinzuaddiert werden,
+  // Suche die naechsten n Spiele. Logik: $chosen_kat enthaelt bereits die Anzahl zu suchender Spiele, man muss nur 100 abziehen.
+	// Grund: Da $chosen_kat eine Zahl zurueckgibt, die der ausgewaehlten Kategorie entspricht, musste hierfuer zuvor 100 hinzuaddiert werden,
 	// damit die Auswahl eindeutig bleibt.
 	$dbanfrage = "  SELECT s.Datum, s.Anpfiff, t1.Name, t2.Name as Name2, s.Tore1, s.Tore2, s.SPIEL_ID, s.Team1, s.Team2, t1.TEAM_ID as TEAM_ID1, t2.TEAM_ID as TEAM_ID2
 		FROM spiel s, team t1, team t2
@@ -353,7 +356,7 @@ if (isset($_POST[submit])) {
  	$result = mysql_db_query ($dbName, $dbanfrage, $connect);
 
 
-	//wenn auf absenden geklickt, zaehle insgesamt neu zu vergebene Faktorpunkte um auszuschliessen, dass gesamt gesetzte FPs - vorher zu dieser Kategorie gesetzte FPs + JETZT zu dieser kategeorie zu setzende FPs GRÖ?ER WIRD, als GESAMT möglich sein soll (=KONTO)
+	//wenn auf absenden geklickt, zaehle insgesamt neu zu vergebene Faktorpunkte um auszuschliessen, dass gesamt gesetzte FPs - vorher zu dieser Kategorie gesetzte FPs + JETZT zu dieser kategeorie zu setzende FPs GROESSERER WIRD, als GESAMT mglich sein soll (=KONTO)
 	if (isset($_POST[submit]))
 	{
 		//Insgesamt vom User gesetzte Faktorpunkte holen
@@ -367,7 +370,19 @@ if (isset($_POST[submit])) {
 		while ($ausgabe = mysql_fetch_array ($result))
 		{
 			$newFaktor = $_POST["F$ausgabe[SPIEL_ID]"];
-			$SNVF += $newFaktor;
+		  if (!$newFaktor) continue;
+
+      // Bisher gesetzte Faktorpunkte dieses Spiels holen
+		  $oldTipp     = ("SELECT t.faktor as oldFaktor FROM tipp t WHERE USER_ID=$userID AND SPIEL_ID=$ausgabe[SPIEL_ID]");
+		  $db_oldTipp  = mysql_db_query($dbName, $oldTipp, $connect);
+		  $res_oldTipp = mysql_fetch_array($db_oldTipp);
+		  $oldFaktor =  $res_oldTipp[oldFaktor];
+
+		  if (debug()) {
+			  print("new-/oldFaktor = $newFaktor/$oldFaktor<br>");
+      }
+
+			$SNVF = $SNVF + ($newFaktor - $oldFaktor); // Differenz zu altem Faktor abziehen
 		}
 		
 		//array "zuruecksetzen", damit naechstes while wieder den ganzen array durchlaufen kann
@@ -382,19 +397,17 @@ if (isset($_POST[submit])) {
 		{
 			print("<br><br><hr><br>
 				Summe gesamt gesetzte Faktorpunkte: $SGGF <br>
-				Summe gesamte Faktorpunkte der Kategorie <strong>$chosen_kat</strong>: $SGFK <br>
-				Summe der nicht mehr zu &auml;ndernden FPs dieser Kategorie weil Spiel in der Vergangenheit:$SGFKV <br>
-				Summe neu verteilte Faktorpunkte: $SNVF <br>
-				Gesamt verggebbare FaktorPunkte: $userKonto <br>
-				Durchschnittl. Faktorpunkte pro Spiel: $avgFPS
+				Summe vergangene Spiele: $anzSpieleVerg <br>
+				Max. noch vergebbare Punkte: $faktorMax - $anzSpieleVerg <br>
+				Summe neu vergebener Punkte: $SNVF<br>
 				");
 		}
 			$zuvielefaktorpunktevergeben = false;
 			
-			$differenz = $SGGF - $SGFK + $SNVF + $SGFKV;
-			if($differenz > $userKonto)
+			$differenz = $faktorMax - $SGGF - $SNVF;
+			if($differenz < 0)
 			{
-				$differenz -= $userKonto;
+				$differenz *= -1;
         $text  = "<br>Es "; 
   			$text .= singplur("wurde", "wurden", $differenz) . " ";
 				$text .= singplur("EIN", $differenz, $differenz) . " ";
@@ -448,7 +461,7 @@ while ($ausgabe = mysql_fetch_array ($result))
 				print "tor2 = $tor2<br>";
 			}
 		 
- 		  // sicherstellen, dass die Anzahl Tore gültig ist
+ 		  // sicherstellen, dass die Anzahl Tore gueltig ist
 		  $tor1 = correctTor($tor1, MIN_TORE, MAX_TORE);
 		  $tor2 = correctTor($tor2, MIN_TORE, MAX_TORE);		 
 
@@ -496,7 +509,7 @@ while ($ausgabe = mysql_fetch_array ($result))
      $ausgabeTor = mysql_fetch_array ($result3);
 
      if ($ausgabeTor[0] > 0 || $ausgabeTor[1] > 0 ) {
-     		 // Anz. Tore ggf. übersetzen (z.B. bei Initialwert 99)
+     		 // Anz. Tore ggf. uebersetzen (z.B. bei Initialwert 99)
          $tor1 = correctTor($ausgabeTor[0], MIN_TORE, MAX_TORE);
          $tor2 = correctTor($ausgabeTor[1], MIN_TORE, MAX_TORE);
      }
@@ -515,11 +528,10 @@ while ($ausgabe = mysql_fetch_array ($result))
      //falsch: $SGFK += $aktuellFaktor;
      
      //Bisher gesetzte Faktorpunkte des users aktualisieren
-     $calc_sumfak=("SELECT SUM(Faktor) as totalF FROM tipp WHERE USER_ID=$userID");
+     $calc_sumfak=("SELECT COUNT(*) as numTipps, SUM(Faktor) as totalF FROM tipp WHERE USER_ID=$userID");
      $calc_faksum=mysql_db_query($dbName,$calc_sumfak, $connect); 
      $faksum = mysql_fetch_array($calc_faksum); 
      $SummeFaktor =  $faksum[totalF];
-
           
      print ("$ausgabe[Datum]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Anpfiff: $ausgabe[Anpfiff]<br><br>");
      
@@ -596,10 +608,10 @@ while ($ausgabe = mysql_fetch_array ($result))
        $ausgabeTor = mysql_fetch_array ($result3);
        
        //Wenn ein Tipp abgegeben wurde
-			 // Achtung: Anzahl Tore wird als "---" angezeigt, wenn initial (Übersetzung des Initialwertes 99).
+			 // Achtung: Anzahl Tore wird als "---" angezeigt, wenn initial (Uebersetzung des Initialwertes 99).
 			 //          Dies liegt daran, dass der Benutzer sofort sehen muss, dass sein nicht abgegebener Tipp
 			 //          keine Punkte bringen kann. In die DB kann man "-1" leider nicht initial eintragen, ohne
-			 //          den unsigned-Typ von "Tore1" und "Tore2" zu ändern.
+			 //          den unsigned-Typ von "Tore1" und "Tore2" zu aendern.
        if ($ausgabeTor[0] > -1 || $ausgabeTor[1] > -1 ) {
            $tor1 = correctTor($ausgabeTor[0], MIN_TORE, MAX_TORE, "---");
            $tor2 = correctTor($ausgabeTor[1], MIN_TORE, MAX_TORE, "---");
@@ -691,23 +703,32 @@ while ($ausgabe = mysql_fetch_array ($result))
 		 echo'<input type="hidden" name="SGFK" value="'.$SGFK.'">';
 */
 
-if (debug()) {
-  print "<pre>faktorMax = $faktorMax</pre>";
-  print "<pre>faktorMin = $faktorMin</pre>";
-  print "<pre>SummeFaktor = $SummeFaktor</pre>";
-}
-
 if (!$SummeFaktor) {  // d.h. diese Seite wurde zum 1. Mal aufgerufen
   $SummeFaktor = $faktorMax - $faktorMin;
   if (debug()) { print "<pre>SummeFaktor neu = $SummeFaktor</pre>"; }
 }
 
 // Anz. restl. Faktorpunkte insges.
-$RestFaktorPunkte = $faktorMax - $SummeFaktor;
+//   = Anz. Faktoren insges.
+//   - Anz. Spiele insges.
+//   - (Summe bereits vergebene Punkte - Summe bereits gespielter Spiele)
+//$RestFaktorPunkte = $faktorMax - $faktorMin - ($SummeFaktor - $anzSpieleVerg);
+$numTipps = $faksum[numTipps];
+$RestFaktorPunkte = $faktorMax - $SummeFaktor - ($faktorMin - $numTipps);
 if ($RestFaktorPunkte > $faktorMax)
 {
     $RestFaktorPunkte = $faktorMax;
 }
+
+if (debug()) {
+  print "<pre>faktorMax = $faktorMax</pre>";
+  print "<pre>faktorMin = $faktorMin</pre>";
+  print "<pre>SummeFaktor = $SummeFaktor</pre>";
+  print "<pre>numTipps = $numTipps</pre>";
+  print "<pre>anzSpieleVerg = $anzSpieleVerg</pre>";
+  print "<pre>RestFaktorPunkte = $RestFaktorPunkte</pre>";
+}
+
 
 // Durchschnittl. Anzahl Faktorpunkte pro Spiel
 //  - Minium: 1
